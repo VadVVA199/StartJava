@@ -123,6 +123,9 @@ public class ArrayTheme {
             if (strArr[i].isBlank() && i != 0 && endIndex < 0) {
                 endIndex = i;
             }
+            if (i == len - 1 && endIndex < 0) {
+                endIndex = len;
+            }
             if (startIndex >= 0 && endIndex > 0) {
                 System.arraycopy(strArr, startIndex, arrStrCopy, startIndexCopy, endIndex - startIndex);
                 startIndexCopy = startIndexCopy + (endIndex - startIndex);

@@ -5,7 +5,7 @@ public class ArrayTheme {
     public static void main(String[] args) {
         System.out.println("1. Реверс значений массива");
         int[] intArr = {25, 35, 10, 5, 88, 91};
-        printArr2Int(intArr);
+        printArrInt(intArr);
         int len = intArr.length - 1;
         for (int i = 0; i < len; i++) {
             int tmp = intArr[i];
@@ -15,7 +15,7 @@ public class ArrayTheme {
         }
 
         System.out.println();
-        printArr2Int(intArr);
+        printArrInt(intArr);
 
         System.out.println("\n\n2. Вывод произведения элементов массива");
         int[] intArr1 = new int[10];
@@ -26,7 +26,7 @@ public class ArrayTheme {
         int prodDigits = 1;
         for (int i = 1; i < len; i++) {
             prodDigits *= i;
-            System.out.print(i != 8 ? intArr1[i] + " * ": intArr1[i] + " = " + prodDigits);
+            System.out.print(intArr1[i] + (i != 8 ? " * " : " = " + prodDigits));
         }
         System.out.println("\nИндекс: " + 0 + " Значение: " + intArr1[0] + "\nИндекс: " + 9 +
                 " Значение: " + intArr1[9]);
@@ -38,7 +38,7 @@ public class ArrayTheme {
             doubleArr[i] = Math.random();
         }
         double middleNum = doubleArr[len / 2];
-        printArr2Double(doubleArr);
+        printArrDouble(doubleArr);
         int numberZeroCells = 0;
         for (int i = 0; i < len; i++) {
             if (doubleArr[i] > middleNum) {
@@ -47,21 +47,22 @@ public class ArrayTheme {
             }
         }
         System.out.println();
-        printArr2Double(doubleArr);
+        printArrDouble(doubleArr);
         System.out.println("\nКоличество обнуленных ячеек: " + numberZeroCells);
 
         System.out.println("\n4. Вывод элементов массива лесенкой в обратном порядке");
         char[] alphabet = new char[26];
+        len = alphabet.length;
         char letter = 'A';
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < len; i++) {
             alphabet[i] = letter;
             letter++;
         }
-        int numRows = 26;
-        for (int i = 25; 0 <= i; i--) {
-            int cycles = numRows - i;
+        int numRows = len;
+        for (int i = len - 1; 0 <= i; i--) {
+            int numLetterInString = numRows - i;
             int numColumns = numRows;
-            for (int j = cycles; j > 0; j--) {
+            for (int j = numLetterInString; j > 0; j--) {
                 System.out.print(alphabet[--numColumns]);
             }
             System.out.println();
@@ -72,14 +73,14 @@ public class ArrayTheme {
         len = intArr2.length;
         for (int i = 0; i < len; i++) {
             int randomNum = (int) (60 + Math.random() * 40);
-            boolean isWrite = true;
+            boolean unique = true;
             for (int j = 0; j < i; j++) {
                 if (intArr2[j] == randomNum) {
-                    isWrite = false;
+                    unique = false;
                     i--;
                 }
             }
-            if (isWrite) {
+            if (unique) {
                 intArr2[i] = randomNum;
             }
         }
@@ -94,14 +95,14 @@ public class ArrayTheme {
         }
         int numElement = 1;
         for (int number : intArr2) {
-            System.out.print( numElement % 10 == 0 ? number + "\n" : number + " ");
+            System.out.print(numElement % 10 == 0 ? number + "\n" : number + " ");
             numElement++;
         }
 
         System.out.println("\n6. Сдвиг элементов массива");
         String[] srcArr = {" ","AA","","BBB","CC","D"," ","E","FF","G",""};
         len = srcArr.length;
-        printArr2String(srcArr);
+        printArrString(srcArr);
         System.out.println();
         int newLen = 0;
         for (String string : srcArr) {
@@ -111,35 +112,31 @@ public class ArrayTheme {
         }
         String[] destArr = new String[newLen];
         int startIndexSrcArr = -1;
-        int endIndexSrcArr = -1;
+        int lenComponentCopiedSrcArr = 0;
         int startIndexDestArr = 0;
         for (int i = 0; i < len; i++) {
-            if (!(srcArr[i].isBlank() || startIndexSrcArr > 0)) {
-                startIndexSrcArr = i;
-            }
-            if (srcArr[i].isBlank() && i != 0 && endIndexSrcArr < 0) {
-                endIndexSrcArr = i;
-            } else if (i == len - 1 && endIndexSrcArr < 0) {
-                endIndexSrcArr = len;
-            }
-            if (startIndexSrcArr >= 0 && endIndexSrcArr > 0) {
-                System.arraycopy(srcArr, startIndexSrcArr, destArr, startIndexDestArr, 
-                        endIndexSrcArr - startIndexSrcArr);
-                startIndexDestArr = startIndexDestArr + (endIndexSrcArr - startIndexSrcArr);
+            if (!srcArr[i].isBlank()) {
+                if (startIndexSrcArr < 0) {
+                    startIndexSrcArr = i;
+                }
+                lenComponentCopiedSrcArr++;
+            } else if (lenComponentCopiedSrcArr != 0) {
+                System.arraycopy(srcArr, startIndexSrcArr, destArr, startIndexDestArr, lenComponentCopiedSrcArr);
+                startIndexDestArr += lenComponentCopiedSrcArr;
+                lenComponentCopiedSrcArr = 0;
                 startIndexSrcArr = -1;
-                endIndexSrcArr = -1;
             }
         }
-        printArr2String(destArr);
+        printArrString(destArr);
     }
 
-    private static void printArr2Int(int[] intArr) {
+    private static void printArrInt(int[] intArr) {
         for (int num : intArr) {
             System.out.print(num + " ");
         }
     }
 
-    private static void printArr2Double(double[] doubleArr) {
+    private static void printArrDouble(double[] doubleArr) {
         int i = 0;
         for (double num : doubleArr) {
             System.out.printf(i == 8 ? "%n %.3f " : " %.3f ", num);
@@ -147,7 +144,7 @@ public class ArrayTheme {
         }
     }
 
-    private static void printArr2String(String[] srcArr) {
+    private static void printArrString(String[] srcArr) {
         for (String str : srcArr) {
             System.out.print(str + " ");
         }

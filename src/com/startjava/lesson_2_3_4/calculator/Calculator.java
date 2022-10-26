@@ -5,6 +5,7 @@ public class Calculator {
     private int num1;
     private int num2;
     private char sing;
+    private String[] expression;
 
     public void setNum1(int num1) {
         this.num1 = num1;
@@ -18,17 +19,22 @@ public class Calculator {
         this.sing = sing;
     }
 
+    public void setExpression(String[] expression) {
+        this.expression = expression;
+    }
+
     public int calculate() {
+        fillingCalculatedFields();
         int result = 1;
         switch (sing) {
             case '+':
-                return num1 + num2;
+                return Math.addExact(num1, num2);
             case '-':
-                return num1 - num2;
+                return Math.subtractExact(num1, num2);
             case '/':
                 return num1 / num2;
             case '*':
-                return num1 * num2;
+                return Math.multiplyExact(num1, num2);
             case '%':
                 return num1 % num2;
             case '^':
@@ -39,5 +45,11 @@ public class Calculator {
                 }
         }
         return result;
+    }
+
+    public void fillingCalculatedFields() {
+        this.num1 = Integer.parseInt(expression[0]);
+        this.sing = expression[1].charAt(0);
+        this.num2 = Integer.parseInt(expression[2]);
     }
 }

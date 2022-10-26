@@ -9,12 +9,8 @@ public class CalculatorTest {
         while (option == 'y') {
             Scanner scanner = new Scanner(System.in);
             Calculator calculator = new Calculator();
-            System.out.print("Введите первое число: ");
-            calculator.setNum1(scanner.nextInt()); 
-            System.out.print("Введите знак математической операции: ");
-            calculator.setSing(scanner.next().charAt(0));
-            System.out.print("Введите второе число: ");
-            calculator.setNum2(scanner.nextInt()); 
+            System.out.print("Введите математическое выражение: ");
+            calculator.setExpression(scanner.nextLine().split(" "));
             System.out.println("Результат: " + calculator.calculate());
             do {
                 System.out.print("Хотите продолжить вычисления? [yes/no]: ");

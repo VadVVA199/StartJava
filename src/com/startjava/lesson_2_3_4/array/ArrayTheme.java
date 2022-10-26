@@ -112,18 +112,18 @@ public class ArrayTheme {
         }
         String[] destArr = new String[newLen];
         int startIndexSrcArr = -1;
-        int lenComponentCopiedSrcArr = 0;
+        int numString = 0;
         int startIndexDestArr = 0;
         for (int i = 0; i < len; i++) {
             if (!srcArr[i].isBlank()) {
                 if (startIndexSrcArr < 0) {
                     startIndexSrcArr = i;
                 }
-                lenComponentCopiedSrcArr++;
-            } else if (lenComponentCopiedSrcArr != 0) {
-                System.arraycopy(srcArr, startIndexSrcArr, destArr, startIndexDestArr, lenComponentCopiedSrcArr);
-                startIndexDestArr += lenComponentCopiedSrcArr;
-                lenComponentCopiedSrcArr = 0;
+                numString++;
+            } else if (numString != 0) {
+                System.arraycopy(srcArr, startIndexSrcArr, destArr, startIndexDestArr, numString);
+                startIndexDestArr += numString;
+                numString = 0;
                 startIndexSrcArr = -1;
             }
         }

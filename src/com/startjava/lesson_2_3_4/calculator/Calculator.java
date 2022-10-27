@@ -47,7 +47,7 @@ public class Calculator {
         return result;
     }
 
-    public void fillingCalculatedFields() {
+    private void fillingCalculatedFields() {
         this.num1 = Integer.parseInt(expression[0]);
         this.sing = expression[1].charAt(0);
         this.num2 = Integer.parseInt(expression[2]);

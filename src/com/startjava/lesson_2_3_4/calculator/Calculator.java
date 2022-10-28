@@ -19,12 +19,9 @@ public class Calculator {
         this.sing = sing;
     }
 
-    public void setExpression(String[] expression) {
-        this.expression = expression;
-    }
-
-    public int calculate() {
-        fillingCalculatedFields();
+    public int calculate(String inputLine) {
+        expression = inputLine.split(" ");
+        parseExpression();
         int result = 1;
         switch (sing) {
             case '+':
@@ -47,7 +44,7 @@ public class Calculator {
         return result;
     }
 
-    private void fillingCalculatedFields() {
+    private void parseExpression() {
         this.num1 = Integer.parseInt(expression[0]);
         this.sing = expression[1].charAt(0);
         this.num2 = Integer.parseInt(expression[2]);

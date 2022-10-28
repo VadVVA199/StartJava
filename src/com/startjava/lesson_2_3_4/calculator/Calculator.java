@@ -5,7 +5,6 @@ public class Calculator {
     private int num1;
     private int num2;
     private char sing;
-    private String[] expression;
 
     public void setNum1(int num1) {
         this.num1 = num1;
@@ -19,9 +18,8 @@ public class Calculator {
         this.sing = sing;
     }
 
-    public int calculate(String inputLine) {
-        expression = inputLine.split(" ");
-        parseExpression();
+    public int calculate(String expression) {
+        parseExpression(expression.split(" "));
         int result = 1;
         switch (sing) {
             case '+':
@@ -44,7 +42,7 @@ public class Calculator {
         return result;
     }
 
-    private void parseExpression() {
+    private void parseExpression(String[] expression) {
         this.num1 = Integer.parseInt(expression[0]);
         this.sing = expression[1].charAt(0);
         this.num2 = Integer.parseInt(expression[2]);

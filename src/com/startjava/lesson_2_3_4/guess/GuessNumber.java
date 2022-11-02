@@ -24,7 +24,6 @@ public class GuessNumber {
         player1.clearAttempts();
         player2.clearAttempts();
         hiddenNumber = (int) (1 + Math.random() * 100);
-        System.out.println("\tслучайное число: " + hiddenNumber);
         Scanner scanner = new Scanner(System.in); 
         currentPlayer = player2;
         while(true) {
@@ -58,9 +57,9 @@ public class GuessNumber {
             System.out.println("Число: " + numPlayer + " игрока: " +
                     playerName + " меньше задуманного числа компьютера");
         }
-        if (currentPlayer.getAttempt() >= 2) {
+        if (currentPlayer.getAttempt() >= 10) {
             System.out.println("У " + playerName + " закончились попытки");
-            if (player1.getAttempt() >= 2 && player2.getAttempt() >= 2) {
+            if (player1.getAttempt() >= 10 && player2.getAttempt() >= 10) {
                 return 0;
             }
         }

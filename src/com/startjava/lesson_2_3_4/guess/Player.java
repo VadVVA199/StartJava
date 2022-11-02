@@ -5,53 +5,38 @@ import java.util.Arrays;
 public class Player {
 
     private String name;
-    private int number;
-    private int[] numbersAttempts;
+    private int[]numbers;
+    private int attempt;
 
     public Player(String name) {
         this.name = name;
+        this.numbers = new int[10];
     }
 
     public String getName() {
         return name;
     }
 
-    public int getNumber() {
-        return number;
+     public int[] getNumbers() {
+        return Arrays.copyOf(numbers, attempt);
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void addNumber(int numberAttempt) {
+        this.numbers[attempt - 1] = numberAttempt;
     }
 
-     public int[] getNumberAttempts() {
-        int endNumbers = numbersAttempts.length;
-        for (int i = 0; i < numbersAttempts.length; i++) {
-            if (numbersAttempts[i] == 0) {
-                endNumbers = i;
-                break;
-            }
-        }
-        return Arrays.copyOf(numbersAttempts, endNumbers);
+    public int getAttempt() {
+        return attempt;
     }
 
-    public void setNumberAttempts(int numberAttempt) {
-        if (numbersAttempts == null) {
-            numbersAttempts = new int[10];
-            numbersAttempts[0] = numberAttempt;
-        } else {
-            for (int i = 0; i < numbersAttempts.length; i++) {
-                if (numbersAttempts[i] == 0) {
-                    numbersAttempts[i] = numberAttempt;
-                    break;
-                }
-            }
-        }
+    public void setAttempt(int attempt) {
+        this.attempt += attempt;
     }
 
-    public void setNumbersAttemptsNull() {
-        if (numbersAttempts != null) {
-            Arrays.fill(numbersAttempts, 0, getNumberAttempts().length, 0);
+    public void clearAttempts() {
+        if (numbers != null) {
+            Arrays.fill(numbers, 0, getAttempt(), 0);
+            attempt = 0;
         }
     }
 }

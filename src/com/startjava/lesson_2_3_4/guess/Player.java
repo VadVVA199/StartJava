@@ -22,19 +22,16 @@ public class Player {
     }
 
     public void addNumber(int number) {
-        this.numbers[attempt - 1] = number;
+        attempt++;
+        numbers[attempt - 1] = number;
     }
 
     public int getAttempt() {
         return attempt;
     }
 
-    public void setAttempt(int attempt) {
-        this.attempt += attempt;
-    }
-
     public void clearAttempts() {
-            Arrays.fill(numbers, 0, attempt, 0);
-            attempt = 0;
+        Arrays.fill(numbers, 0, attempt, 0);
+        attempt = 0;
     }
 }

@@ -34,7 +34,6 @@ public class GuessNumber {
 
     private void enterNumber(Player player, Scanner scanner) {
         System.out.print("Игрок " + player.getName() + " введите ваше число: ");
-        player.setAttempt(1);
         player.addNumber(scanner.nextInt());
     }
 
@@ -55,18 +54,25 @@ public class GuessNumber {
         }
         if (player.getAttempt() >= 10) {
             System.out.println("У " + playerName + " закончились попытки");
-            if (player1.getAttempt() >= 10 && player2.getAttempt() >= 10) {
-                return true;
-            }
+            return checkEndAttempts(player1, player2);
         }
         return false;
     }
 
-    private void printPlayerNumbers(Player player) {
-            System.out.print(player.getName());
-            for (int currentNum : player.getNumbers()) {
-                System.out.print(" " + currentNum);
+    private boolean checkEndAttempts(Player... args) {
+        for (Player player : args) {
+            if (player.getAttempt() < 10) {
+                return false;
             }
+        }
+        return true;
+    }
+
+    private void printPlayerNumbers(Player player) {
+        System.out.print(player.getName());
+        for (int currentNum : player.getNumbers()) {
+            System.out.print(" " + currentNum);
+        }
         System.out.println();
     }
 }

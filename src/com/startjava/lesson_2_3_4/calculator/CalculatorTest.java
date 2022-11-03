@@ -7,10 +7,13 @@ public class CalculatorTest {
     public static void main(String[] args) {
         char option = 'y';
         Scanner scanner = new Scanner(System.in);
-        Calculator calculator = new Calculator();
         while (option == 'y') {
             System.out.print("Введите математическое выражение: ");
-            System.out.println("Результат: " + calculator.calculate(scanner.nextLine()));
+            try {
+                System.out.println("Результат: " + Calculator.calculate(scanner.nextLine()));
+            } catch (Exception e) {
+                System.out.println("Вы ввели некорректные данные!");
+            }
             do {
                 System.out.print("Хотите продолжить вычисления? [yes/no]: ");
                 option = scanner.nextLine().charAt(0);

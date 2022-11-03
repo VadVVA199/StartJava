@@ -2,49 +2,43 @@ package com.startjava.lesson_2_3_4.calculator;
 
 public class Calculator {
 
-    private int num1;
-    private int num2;
-    private char sing;
+    private static int num1;
+    private static int num2;
+    private static char sing;
 
-    public void setNum1(int num1) {
-        this.num1 = num1;
-    }
-
-    public void setNum2(int num2) {
-        this.num2 = num2;
-    }
-
-    public void setSing(char sing) {
-        this.sing = sing;
-    }
-
-    public int calculate(String expression) {
+    public static int calculate(String expression) throws Exception {
         parseExpression(expression.split(" "));
-        int result = 1;
-        switch (sing) {
+        return switch (sing) {
             case '+':
-                return Math.addExact(num1, num2);
+                yield Math.addExact(num1, num2);
             case '-':
-                return Math.subtractExact(num1, num2);
+                yield Math.subtractExact(num1, num2);
             case '/':
-                return num1 / num2;
+                yield num1 / num2;
             case '*':
-                return Math.multiplyExact(num1, num2);
+                yield  Math.multiplyExact(num1, num2);
             case '%':
-                return num1 % num2;
+                yield num1 % num2;
             case '^':
                 int counter = num2;
+                int resultNumberPower = 1;
                 while (counter > 0) {
-                    result *= num1;
+                    resultNumberPower *= num1;
                     counter--;
                 }
-        }
-        return result;
+                yield resultNumberPower;
+            default:
+                throw new Exception();
+        };
     }
 
-    private void parseExpression(String[] expression) {
-        this.num1 = Integer.parseInt(expression[0]);
-        this.sing = expression[1].charAt(0);
-        this.num2 = Integer.parseInt(expression[2]);
+    private static void parseExpression(String[] expression) throws Exception {
+        if (Integer.parseInt(expression[0]) < 0 || Integer.parseInt(expression[2]) < 0) {
+            throw new Exception();
+        } else {
+            num1 = Integer.parseInt(expression[0]);
+            sing = expression[1].charAt(0);
+            num2 = Integer.parseInt(expression[2]);
+        }
     }
 }

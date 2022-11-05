@@ -6,20 +6,15 @@ public class Calculator {
     private static int num2;
     private static char sing;
 
-    public static int calculate(String expression) throws Exception {
+    public static int calculate(String expression) {
         parseExpression(expression.split(" "));
         return switch (sing) {
-            case '+':
-                yield Math.addExact(num1, num2);
-            case '-':
-                yield Math.subtractExact(num1, num2);
-            case '/':
-                yield num1 / num2;
-            case '*':
-                yield  Math.multiplyExact(num1, num2);
-            case '%':
-                yield num1 % num2;
-            case '^':
+            case '+' -> Math.addExact(num1, num2);
+            case '-' -> Math.subtractExact(num1, num2);
+            case '/' -> num1 / num2;
+            case '*' -> Math.multiplyExact(num1, num2);
+            case '%' -> num1 % num2;
+            case '^' -> {
                 int counter = num2;
                 int resultNumberPower = 1;
                 while (counter > 0) {
@@ -27,18 +22,17 @@ public class Calculator {
                     counter--;
                 }
                 yield resultNumberPower;
-            default:
-                throw new Exception();
+            }
+            default -> throw new IllegalArgumentException();
         };
     }
 
-    private static void parseExpression(String[] expression) throws Exception {
+    private static void parseExpression(String[] expression) {
         if (Integer.parseInt(expression[0]) < 0 || Integer.parseInt(expression[2]) < 0) {
-            throw new Exception();
-        } else {
+            throw new NullPointerException();
+        }
             num1 = Integer.parseInt(expression[0]);
             sing = expression[1].charAt(0);
             num2 = Integer.parseInt(expression[2]);
-        }
     }
 }

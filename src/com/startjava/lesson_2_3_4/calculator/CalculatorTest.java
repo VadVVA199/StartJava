@@ -11,8 +11,16 @@ public class CalculatorTest {
             System.out.print("Введите математическое выражение: ");
             try {
                 System.out.println("Результат: " + Calculator.calculate(scanner.nextLine()));
-            } catch (Exception e) {
-                System.out.println("Вы ввели некорректные данные!");
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка, ввели строковый символ за место числа");
+            } catch (ArithmeticException e) {
+                System.out.println("Ошибка, попытка деления на ноль");
+            } catch (IllegalArgumentException e) {
+                System.out.println("Ошибка, ввели неверный оператор в выражении");
+            } catch (NullPointerException e) {
+                System.out.println("Ошибка, ввели отрицательное число");
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Ошибка, ввели пустую строку за место выражения");
             }
             do {
                 System.out.print("Хотите продолжить вычисления? [yes/no]: ");

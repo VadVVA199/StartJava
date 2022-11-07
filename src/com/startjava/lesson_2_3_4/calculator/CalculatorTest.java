@@ -16,11 +16,7 @@ public class CalculatorTest {
             } catch (ArithmeticException e) {
                 System.out.println("Ошибка, попытка деления на ноль");
             } catch (IllegalArgumentException e) {
-                System.out.println("Ошибка, ввели неверный оператор в выражении");
-            } catch (NullPointerException e) {
-                System.out.println("Ошибка, ввели отрицательное число");
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("Ошибка, ввели пустую строку за место выражения");
+                System.out.println(e.getMessage());
             }
             do {
                 System.out.print("Хотите продолжить вычисления? [yes/no]: ");

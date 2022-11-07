@@ -7,6 +7,7 @@ public class Calculator {
     private static char sing;
 
     public static int calculate(String expression) {
+        checkString(expression);
         parseExpression(expression.split(" "));
         return switch (sing) {
             case '+' -> Math.addExact(num1, num2);
@@ -15,24 +16,32 @@ public class Calculator {
             case '*' -> Math.multiplyExact(num1, num2);
             case '%' -> num1 % num2;
             case '^' -> {
-                int counter = num2;
                 int resultNumberPower = 1;
-                while (counter > 0) {
+                for (int counter = num2; counter > 0; counter--) {
                     resultNumberPower *= num1;
-                    counter--;
                 }
                 yield resultNumberPower;
             }
-            default -> throw new IllegalArgumentException();
+            default -> throw new IllegalArgumentException("Ошибка, ввели неверный оператор в выражение");
         };
+    }
+
+    private static void checkString(String expression) {
+        if (expression.isBlank()) {
+            throw new IllegalArgumentException("Ошибка, Ввели пустую строку");
+        }
+        String[] array = expression.split(" ");
+        if (array.length != 3) {
+            throw new IllegalArgumentException("Ошибка, Нет пробелов между символами, либо их очень много");
+        }
     }
 
     private static void parseExpression(String[] expression) {
         if (Integer.parseInt(expression[0]) < 0 || Integer.parseInt(expression[2]) < 0) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException("Ошибка, ввели отрицательное число");
         }
-            num1 = Integer.parseInt(expression[0]);
-            sing = expression[1].charAt(0);
-            num2 = Integer.parseInt(expression[2]);
+        num1 = Integer.parseInt(expression[0]);
+        sing = expression[1].charAt(0);
+        num2 = Integer.parseInt(expression[2]);
     }
 }

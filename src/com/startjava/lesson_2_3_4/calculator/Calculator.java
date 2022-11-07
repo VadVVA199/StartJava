@@ -8,7 +8,6 @@ public class Calculator {
 
     public static int calculate(String expression) {
         checkString(expression);
-        parseExpression(expression.split(" "));
         return switch (sing) {
             case '+' -> Math.addExact(num1, num2);
             case '-' -> Math.subtractExact(num1, num2);
@@ -16,11 +15,11 @@ public class Calculator {
             case '*' -> Math.multiplyExact(num1, num2);
             case '%' -> num1 % num2;
             case '^' -> {
-                int resultNumberPower = 1;
+                int result = 1;
                 for (int counter = num2; counter > 0; counter--) {
-                    resultNumberPower *= num1;
+                    result *= num1;
                 }
-                yield resultNumberPower;
+                yield result;
             }
             default -> throw new IllegalArgumentException("Ошибка, ввели неверный оператор в выражение");
         };
@@ -34,6 +33,7 @@ public class Calculator {
         if (array.length != 3) {
             throw new IllegalArgumentException("Ошибка, Нет пробелов между символами, либо их очень много");
         }
+        parseExpression(array);
     }
 
     private static void parseExpression(String[] expression) {

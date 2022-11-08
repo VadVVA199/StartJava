@@ -8,6 +8,8 @@ public class Player {
     private int[] numbers;
     private int attempt;
 
+    private int minDifferenceHiddenNumber;
+
     public Player(String name) {
         this.name = name;
         this.numbers = new int[10];
@@ -22,16 +24,33 @@ public class Player {
     }
 
     public void addNumber(int number) {
-        attempt++;
-        numbers[attempt - 1] = number;
+        if (number > 0 && number <= 100) {
+            numbers[attempt - 1] = number;
+        } else {
+            throw new IllegalArgumentException("Ошибка, число не в заданном диапазоне");
+        }
+
     }
 
     public int getAttempt() {
         return attempt;
     }
 
+    public void setAttempt(int attempt) {
+        this.attempt += attempt;
+    }
+
     public void clearAttempts() {
         Arrays.fill(numbers, 0, attempt, 0);
         attempt = 0;
     }
+
+    public int getMinDifferenceHiddenNumber() {
+        return minDifferenceHiddenNumber;
+    }
+
+    public void setMinDifferenceHiddenNumber(int minDifferenceHiddenNumber) {
+        this.minDifferenceHiddenNumber = minDifferenceHiddenNumber;
+    }
+
 }

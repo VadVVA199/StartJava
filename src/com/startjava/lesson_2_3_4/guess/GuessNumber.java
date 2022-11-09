@@ -25,12 +25,10 @@ public class GuessNumber {
                 break;
             }
             calculateResultRounds(player);
-            if (player.equals(players[0])) {
-                player = players[1];
-            } else if (player.equals(players[1])) {
-                player = players[2];
-            } else {
+            if (player.equals(players[2])) {
                 player = players[0];
+            } else {
+                player = players[player.equals(players[0]) ? 1 : 2];
             }
         }
         calculateResultRounds(player);
@@ -135,8 +133,7 @@ public class GuessNumber {
         if (players[0].getMinDifferenceHiddenNumber() > players[2].getMinDifferenceHiddenNumber()) {
             winners[0] = players[2];
         } else if (players[0].getMinDifferenceHiddenNumber() == players[2].getMinDifferenceHiddenNumber()) {
-            int index = 1;
-            winners[winners[1] == null ? index : index + 1] = players[2];
+            winners[winners[1] == null ? 1 : 2] = players[2];
         }
         return winners;
     }
@@ -144,7 +141,7 @@ public class GuessNumber {
     private void printWinners(Player[] winners) {
         System.out.println("Победители по " + winners[0].getAttempt() + " раунду" );
         for (Player player : winners) {
-            if (!(player == null)) {
+            if (player != null) {
                 System.out.print(player.getName() + " ");
             }
         }

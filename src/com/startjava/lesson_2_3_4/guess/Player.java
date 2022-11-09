@@ -29,7 +29,6 @@ public class Player {
         } else {
             throw new IllegalArgumentException("Ошибка, число не в заданном диапазоне");
         }
-
     }
 
     public int getAttempt() {

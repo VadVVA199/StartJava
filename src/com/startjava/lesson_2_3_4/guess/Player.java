@@ -18,7 +18,7 @@ public class Player {
         return name;
     }
 
-     public int[] getNumbers() {
+    public int[] getNumbers() {
         return Arrays.copyOf(numbers, attempt);
     }
 
@@ -44,7 +44,7 @@ public class Player {
         return numberWins;
     }
 
-    public void addNumberWins() {
+    public void incNumberWins() {
         numberWins++;
     }
 

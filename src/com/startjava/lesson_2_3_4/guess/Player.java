@@ -8,6 +8,7 @@ public class Player {
     private int[] numbers;
     private int attempt;
     private int numberWins;
+    private int[] numbersWholeGame = new int[30];
 
     public Player(String name) {
         this.name = name;
@@ -23,12 +24,11 @@ public class Player {
     }
 
     public void addNumber(int number) {
-        if (number > 0 && number <= 100) {
-            attempt++;
-            numbers[attempt - 1] = number;
-        } else {
+        if (number <= 0 || number > 100) {
             throw new IllegalArgumentException("Ошибка, число не в заданном диапазоне");
         }
+        attempt++;
+        numbers[attempt - 1] = number;
     }
 
     public int getAttempt() {
@@ -50,5 +50,22 @@ public class Player {
 
     public void clearNumberWins() {
         numberWins = 0;
+    }
+
+    public int[] getNumbersWholeGame(){
+        return numbersWholeGame;
+    }
+    public void copyNumbersWholeGame() {
+        if (numbersWholeGame[0] == 0) {
+            System.arraycopy(numbers, 0, numbersWholeGame, 0, numbers.length);
+        } else if (numbersWholeGame[10] == 0) {
+            System.arraycopy(numbers, 0, numbersWholeGame, 10, numbers.length);
+        } else if (numbersWholeGame[20] == 0) {
+            System.arraycopy(numbers, 0, numbersWholeGame, 20, numbers.length);
+        }
+    }
+
+    public void clearNumbersWholeGame() {
+        Arrays.fill(numbersWholeGame, 0, 29, 0);
     }
 }

@@ -17,24 +17,29 @@ public class GuessNumber {
         printParticipants();
         clearPlayerAttempts();
         clearNumbersWins();
+        clearNumbersWholeGame();
         hiddenNumber = (int) (1 + Math.random() * 100);
         Scanner scanner = new Scanner(System.in);
-        outRound:
-        for (int round = 1; round <= 10; round++) {
-            for (Player player : players) {
-                enterNumber(player, scanner);
-                if (checkNumber(player)) {
-                    break outRound;
+        for (int round = 1; round <= 3; round++) {
+            boolean outRoundAttempts = true;
+            while (outRoundAttempts) {
+                for (Player player : players) {
+                    enterNumber(player, scanner);
+                    if (checkNumber(player, round)) {
+                        printPlayerNumbers();
+                        return;
+                    }
+                    checkEndAttempts(player);
                 }
-                checkEndAttempts(player);
+                calculateRoundWins();
+                outRoundAttempts = checkEndAttemptsInRound();
             }
-            calculateRoundWins(round);
-            if ((round % 3) == 0 || round == 10) {
-                printRoundWins(round);
-                System.out.println();
-            }
+            printRoundWins(round);
+            copyNumbersWholeGamePlayers();
+            clearPlayerAttempts();
+            System.out.println();
         }
-        printPlayerNumbers();
+        printPlayerNumbersWholeGame();
     }
 
     private void shuffle() {
@@ -54,6 +59,12 @@ public class GuessNumber {
         }
     }
 
+    private void copyNumbersWholeGamePlayers() {
+        for (Player player : players) {
+            player.copyNumbersWholeGame();
+        }
+    }
+
     private void clearPlayerAttempts() {
         for (Player player : players) {
             player.clearAttempts();
@@ -63,6 +74,12 @@ public class GuessNumber {
     private void clearNumbersWins() {
         for (Player player : players) {
             player.clearNumberWins();
+        }
+    }
+
+    private void clearNumbersWholeGame() {
+        for (Player player : players) {
+            player.clearNumbersWholeGame();
         }
     }
 
@@ -81,12 +98,12 @@ public class GuessNumber {
         }
     }
 
-    private boolean checkNumber(Player player) {
+    private boolean checkNumber(Player player, int round) {
         int number = player.getNumbers()[player.getAttempt() - 1];
         String name = player.getName();
         if (number == hiddenNumber) {
             System.out.println("Игрок: " + name + " угадал число " + number + " c " +
-                    player.getAttempt() + "-ой попытки");
+                    player.getAttempt() + "-ой попытки, " + round + "-го раунда");
             return true;
         }
         String compareResult = number > hiddenNumber ? " больше " : " меньше ";
@@ -101,15 +118,15 @@ public class GuessNumber {
         }
     }
 
-    private void calculateRoundWins ( int round) {
+    private void calculateRoundWins () {
         Player[] winners = new Player[players.length];
         System.arraycopy(players, 0, winners, 0, players.length);
         for (int i = 0; i < winners.length; i++) {
             for (int j = 0; j < winners.length - 1; j++) {
                 int differenceHiddenNumberAndNumberOnePlayer = Math.abs(hiddenNumber -
-                        winners[j].getNumbers()[round - 1]);
+                        winners[j].getNumbers()[winners[j].getAttempt() - 1]);
                 int differenceHiddenNumberAndNumberTwoPlayer = Math.abs(hiddenNumber -
-                        winners[j + 1].getNumbers()[round - 1]);
+                        winners[j + 1].getNumbers()[winners[j].getAttempt() - 1]);
                 if (differenceHiddenNumberAndNumberOnePlayer > differenceHiddenNumberAndNumberTwoPlayer) {
                     Player temp = winners[j];
                     winners[j] = winners[j + 1];
@@ -128,8 +145,12 @@ public class GuessNumber {
                 break;
             }
             index++;
-        } while (Math.abs(hiddenNumber - winners[0].getNumbers()[round - 1]) ==
-                Math.abs(hiddenNumber - winners[index].getNumbers()[round - 1]));
+        } while (Math.abs(hiddenNumber - winners[0].getNumbers()[winners[0].getAttempt() - 1]) ==
+                Math.abs(hiddenNumber - winners[index].getNumbers()[winners[index].getAttempt() - 1]));
+    }
+
+    private boolean checkEndAttemptsInRound() {
+        return players[players.length - 1].getAttempt() != 10 ? true : false;
     }
 
     private void printRoundWins ( int round){
@@ -163,7 +184,21 @@ public class GuessNumber {
         for (Player player : players) {
             System.out.print(player.getName());
             for (int currentNumber : player.getNumbers()) {
-                System.out.print(" " + currentNumber);
+                if (currentNumber != 0) {
+                    System.out.print(" " + currentNumber);
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    private void printPlayerNumbersWholeGame() {
+        for (Player player : players) {
+            System.out.print(player.getName());
+            for (int currentNumber : player.getNumbersWholeGame()) {
+               if (currentNumber != 0) {
+                   System.out.print(" " + currentNumber);
+               }
             }
             System.out.println();
         }

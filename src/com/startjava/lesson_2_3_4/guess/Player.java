@@ -4,15 +4,15 @@ import java.util.Arrays;
 
 public class Player {
 
-    private String name;
-    private int[] numbers;
+    private final String name;
+    private final int[] numbers;
     private int attempt;
     private int numberWins;
-    private int[] numbersWholeGame = new int[30];
+    private final int[] numbersWholeGame = new int[GuessNumber.NUMBER_ATTEMPTS];
 
     public Player(String name) {
         this.name = name;
-        this.numbers = new int[10];
+        this.numbers = new int[GuessNumber.NUMBER_ATTEMPTS];
     }
 
     public String getName() {
@@ -56,16 +56,10 @@ public class Player {
         return numbersWholeGame;
     }
     public void copyNumbersWholeGame() {
-        if (numbersWholeGame[0] == 0) {
-            System.arraycopy(numbers, 0, numbersWholeGame, 0, numbers.length);
-        } else if (numbersWholeGame[10] == 0) {
-            System.arraycopy(numbers, 0, numbersWholeGame, 10, numbers.length);
-        } else if (numbersWholeGame[20] == 0) {
-            System.arraycopy(numbers, 0, numbersWholeGame, 20, numbers.length);
-        }
+        System.arraycopy(numbers, 0, numbersWholeGame, 0, numbers.length);
     }
 
     public void clearNumbersWholeGame() {
-        Arrays.fill(numbersWholeGame, 0, 29, 0);
+        Arrays.fill(numbersWholeGame, 0, GuessNumber.NUMBER_ATTEMPTS - 1, 0);
     }
 }

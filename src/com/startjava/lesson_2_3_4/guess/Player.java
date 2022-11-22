@@ -8,7 +8,6 @@ public class Player {
     private final int[] numbers;
     private int attempt;
     private int numberWins;
-    private final int[] numbersWholeGame = new int[GuessNumber.NUMBER_ATTEMPTS];
 
     public Player(String name) {
         this.name = name;
@@ -50,16 +49,5 @@ public class Player {
 
     public void clearNumberWins() {
         numberWins = 0;
-    }
-
-    public int[] getNumbersWholeGame(){
-        return numbersWholeGame;
-    }
-    public void copyNumbersWholeGame() {
-        System.arraycopy(numbers, 0, numbersWholeGame, 0, numbers.length);
-    }
-
-    public void clearNumbersWholeGame() {
-        Arrays.fill(numbersWholeGame, 0, GuessNumber.NUMBER_ATTEMPTS - 1, 0);
     }
 }

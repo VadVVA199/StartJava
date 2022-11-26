@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class GuessNumber {
 
-    public static final int NUMBER_ATTEMPTS = 3;
+    public static final int NUMBER_ATTEMPTS = 10;
     private static final int NUMBER_ROUNDS = 3;
     private final Player[] players;
     private int hiddenNumber;
@@ -24,7 +24,6 @@ public class GuessNumber {
         for (int round = 1; round <= NUMBER_ROUNDS; round++) {
             if ( isWinner || round == 1 ) {
                 hiddenNumber = (int) (1 + Math.random() * 100);
-                System.out.println("число компа: " + hiddenNumber);
                 clearPlayerAttempts();
                 isWinner = false;
             }

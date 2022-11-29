@@ -53,11 +53,9 @@ public class BookshelfTest {
         Book[] books = bookshelf.getNumberBooks();
         int lenMaxStringBook = 0;
         for (Book book : books) {
-            if (book != null) {
                 int len = book.toString().length();
                 if (len > lenMaxStringBook) {
                     lenMaxStringBook = len;
-                }
             }
         }
         for (Book book : books) {
@@ -110,24 +108,28 @@ public class BookshelfTest {
                 " не добавлена, нет места на полке") );
     }
 
-    private static int findBook() {
+    private static void findBook() {
         System.out.print("Введите название для поиска книги: ");
-        Scanner scanner = new Scanner(System.in);
-        String titleBook = scanner.nextLine();
-        int indexBook = bookshelf.findBook(titleBook);
-        if (indexBook == -1) {
-            System.out.println("Книга с названием: " + titleBook + " не найдена!");
-            return indexBook;
+        try {
+            Scanner scanner = new Scanner(System.in);
+            String titleBook = scanner.nextLine();
+            Book book = bookshelf.findBook(titleBook);
+            System.out.println("Книга " + book + " найдена");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
-        System.out.println("Книга " + bookshelf.getNumberBooks()[indexBook] + " найдена");
-        return indexBook;
     }
 
     private static void deleteBook() {
-        System.out.println("Для удаления книги введите ее название.");
-        int index = findBook();
-        if (index != -1) {
-            bookshelf.delete(index);
+        System.out.print("Для удаления книги введите ее название ");
+        try {
+            Scanner scanner = new Scanner(System.in);
+            String titleBook = scanner.nextLine();
+            Book book = bookshelf.findBook(titleBook);
+            bookshelf.delete(book.getTitle());
+            System.out.println("Книга " + book + " удалена");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -136,7 +138,7 @@ public class BookshelfTest {
     }
 
     private static int getNumberBookOnShelves() {
-        return bookshelf.getNumberBookOnShelves();
+        return bookshelf.getCountBooks();
     }
 
     private static int getAmountFreeSpace() {

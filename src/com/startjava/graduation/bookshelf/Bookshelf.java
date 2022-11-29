@@ -1,74 +1,59 @@
 package com.startjava.graduation.bookshelf;
 
+import java.util.Arrays;
+
 public class Bookshelf {
 
     public final int NUMBER_SHELVES = 10;
-    private int numberBookOnShelves;
-    private final Book[] arrayTenBooks = new Book[NUMBER_SHELVES];
+    private int countBooks;
+    private final Book[] books = new Book[NUMBER_SHELVES];
 
     public boolean addBook(Book book) {
-        for (int i = 0; i < arrayTenBooks.length; i++) {
-            if (arrayTenBooks[i] == null) {
-                arrayTenBooks[i] = book;
-                numberBookOnShelves++;
-                return true;
-            }
+        if (countBooks < NUMBER_SHELVES) {
+            books[countBooks] = book;
+            countBooks++;
+            return true;
         }
         return false;
     }
 
-    public int findBook(String string) {
-        for (int i = 0; i < arrayTenBooks.length; i++) {
-            if (arrayTenBooks[i] != null && arrayTenBooks[i].getTitle().equals(string)) {
-               return i;
+    public Book findBook(String titleBook) {
+        for (int i = 0; i < countBooks; i++) {
+            if (books[i].getTitle().equals(titleBook)) {
+                return books[i];
             }
         }
-        return -1;
+        throw new IllegalArgumentException("Данная книга по названию " + titleBook + " не найдена");
     }
 
-    public void delete(int index) {
-        System.out.print("Книга " + arrayTenBooks[index] + " удалена");
-        arrayTenBooks[index] = null;
-        for (int i = 0; i < arrayTenBooks.length - 1; i++) {
-            if (arrayTenBooks[i] == null) {
-                for (int j = i; j < arrayTenBooks.length - 1; j++) {
-                    if (arrayTenBooks[j + 1] != null) {
-                        arrayTenBooks[i] = arrayTenBooks[j + 1];
-                        arrayTenBooks[j + 1] = null;
-                        break;
-                    }
-                }
-            }
-        }
-        numberBookOnShelves--;
-        System.out.println();
+    public void delete(String titleBook) {
+        for (int i = 0; i < countBooks; i++) {
+            if (books[i].getTitle().equals(titleBook)) {
+                Book[] arrayCopyBooks = new Book[NUMBER_SHELVES];
+                System.arraycopy(books,0, arrayCopyBooks, 0, i);
+                System.arraycopy(books,i + 1, arrayCopyBooks, i, books.length - i - 1);
+                Arrays.fill(books, null);
+                System.arraycopy(arrayCopyBooks, 0, books, 0, books.length);
+                countBooks--;
+           }
+       }
     }
 
     public Book[] getNumberBooks() {
-        return arrayTenBooks;
+        return Arrays.copyOf(books, countBooks);
     }
 
-    public int getNumberBookOnShelves() {
-        return numberBookOnShelves;
+    public int getCountBooks() {
+        return countBooks;
     }
 
     public int getAmountFreeSpace() {
-        int amountFreeSpace = 0;
-        for (Book book : arrayTenBooks) {
-            if (book == null) {
-                amountFreeSpace++;
-            }
-        }
-        return amountFreeSpace;
+        return NUMBER_SHELVES - countBooks;
     }
 
     public void clearShelf() {
-        for (int i = 0; i < arrayTenBooks.length; i++) {
-            if (arrayTenBooks[i] != null) {
-                arrayTenBooks[i] = null;
-            }
-            numberBookOnShelves = 0;
-        }
+        Arrays.fill(books, null);
+        countBooks = 0;
         System.out.println("Очистили полки от книг");
     }
 }

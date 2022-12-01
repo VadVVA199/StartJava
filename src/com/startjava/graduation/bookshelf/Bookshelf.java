@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Bookshelf {
 
-    public final int NUMBER_SHELVES = 10;
+    public static final int NUMBER_SHELVES = 10;
     private int countBooks;
     private final Book[] books = new Book[NUMBER_SHELVES];
 
@@ -17,29 +17,27 @@ public class Bookshelf {
         return false;
     }
 
-    public Book findBook(String titleBook) {
+    public <T> T findBook(String title) {
         for (int i = 0; i < countBooks; i++) {
-            if (books[i].getTitle().equals(titleBook)) {
-                return books[i];
+            if (books[i].getTitle().equals(title)) {
+                return (T) books[i];
             }
         }
-        throw new IllegalArgumentException("Данная книга по названию " + titleBook + " не найдена");
+        Integer number = -1;
+        return (T) number;
     }
 
-    public void delete(String titleBook) {
+    public void delete(String title) {
         for (int i = 0; i < countBooks; i++) {
-            if (books[i].getTitle().equals(titleBook)) {
-                Book[] arrayCopyBooks = new Book[NUMBER_SHELVES];
-                System.arraycopy(books,0, arrayCopyBooks, 0, i);
-                System.arraycopy(books,i + 1, arrayCopyBooks, i, books.length - i - 1);
-                Arrays.fill(books, null);
-                System.arraycopy(arrayCopyBooks, 0, books, 0, books.length);
+            if (books[i].getTitle().equals(title)) {
+                System.arraycopy(books,i + 1, books, i, books.length - i - 1);
+                Arrays.fill(books, books.length - 1, books.length, null);
                 countBooks--;
            }
        }
     }
 
-    public Book[] getNumberBooks() {
+    public Book[] getAllBooks() {
         return Arrays.copyOf(books, countBooks);
     }
 
@@ -52,7 +50,7 @@ public class Bookshelf {
     }
 
     public void clearShelf() {
-        Arrays.fill(books, null);
+        Arrays.fill(books, 0, countBooks - 1, null);
         countBooks = 0;
         System.out.println("Очистили полки от книг");
     }

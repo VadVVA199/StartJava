@@ -116,18 +116,13 @@ public class BookshelfTest {
 
     private static void findBook() {
         System.out.print("Введите название для поиска книги: ");
-        try {
             String titleBook = scanner.nextLine();
             System.out.println("Книга " + (bookshelf.findBook(titleBook) instanceof Book ? bookshelf.findBook(titleBook)
                     : "с названием " + titleBook + " не") + " найдена");
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     private static void deleteBook() {
         System.out.print("Для удаления книги введите ее название ");
-        try {
             String titleBook = scanner.nextLine();
             if (bookshelf.findBook(titleBook) instanceof Book) {
                 Book book = bookshelf.findBook(titleBook);
@@ -136,9 +131,6 @@ public class BookshelfTest {
             } else {
                 System.out.println("Книга с названием " + titleBook + " не найдена");
             }
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     private static void clearShelf() {

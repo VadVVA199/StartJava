@@ -10,14 +10,7 @@ public class BookshelfTest {
     public static void main(String[] args) {
         bookshelf = new Bookshelf();
         while (isEndProgram) {
-            System.out.print(getMenu());
-            if (getNumberBookOnShelves() == 0) {
-                System.out.println("Шкаф пуст. Вы можете добавить в него первую книгу");
-            } else {
-                System.out.println("Шкаф содержит " + getNumberBookOnShelves() + " книги.  Свободно - " +
-                        getAmountFreeSpace() + " полок");
-                printBooksOnShelves();
-            }
+            printBooksOnShelves();
             System.out.print("Введите команду: ");
             try {
                 String command = scanner.nextLine();
@@ -39,8 +32,8 @@ public class BookshelfTest {
         }
     }
 
-    private static String getMenu() {
-        return """
+    private static void printMenu() {
+        System.out.print("""
                 -----------------------------------------------------
                     ОБЪЯВЛЕНИЕ
                 Как добавлять книги? Книги добавляются через запятую:
@@ -55,34 +48,40 @@ public class BookshelfTest {
                 4) Очистить полку, ввести: Очистить
                 5) Завершить работу, ввести: Завершить
                 -----------------------------------------------------
-                """;
+                """);
     }
 
     private static void printBooksOnShelves() {
-        Book[] books = bookshelf.getAllBooks();
-        int lenMaxStringBook = 0;
-        for (Book book : books) {
+        printMenu();
+        if (bookshelf.getCountBooks() == 0) {
+            System.out.println("Шкаф пуст. Вы можете добавить в него первую книгу");
+        } else {
+            System.out.println("Шкаф содержит " + bookshelf.getCountBooks() + " книги.  Свободно - " +
+                    getAmountFreeSpace() + " полок");
+            Book[] books = bookshelf.getAllBooks();
+            int lenMaxStringBook = 0;
+            for (Book book : books) {
                 int len = book.toString().length();
                 if (len > lenMaxStringBook) {
                     lenMaxStringBook = len;
+                }
             }
-        }
-        for (Book book : books) {
-            if (book != null) {
-                int numberCharacter = lenMaxStringBook - book.toString().length();
-                System.out.println("|" + book + " ".repeat(numberCharacter) + "|");
+            for (Book book : books) {
+                if (book != null) {
+                    int numberCharacter = lenMaxStringBook - book.toString().length();
+                    System.out.println("|" + book + " ".repeat(numberCharacter) + "|");
+                    System.out.println("|" + "-".repeat(lenMaxStringBook) + "|");
+                }
+            }
+            if (bookshelf.getCountBooks() < Bookshelf.NUMBER_SHELVES) {
+                System.out.println("|" + " ".repeat(lenMaxStringBook) + "|");
                 System.out.println("|" + "-".repeat(lenMaxStringBook) + "|");
             }
         }
-        if (getNumberBookOnShelves() < Bookshelf.NUMBER_SHELVES) {
-            System.out.println("|" + " ".repeat(lenMaxStringBook) + "|");
-            System.out.println("|" + "-".repeat(lenMaxStringBook) + "|");
-        }
     }
 
-    private static void selectAction(String commandString) {
-        String[] command = menuItem(commandString);
-        switch (command[0]) {
+    private static void selectAction(String command) {
+        switch (command) {
             case "Добавить" -> addBook();
             case "Найти" -> findBook();
             case "Удалить" -> deleteBook();
@@ -92,23 +91,11 @@ public class BookshelfTest {
         }
     }
 
-    private static String[] menuItem(String commandString) {
-        if (commandString.isBlank()) {
-            throw new IllegalArgumentException("Ошибка, ввели пустую строку");
-        }
-        String[] array = commandString.split(" ");
-        if (array.length != 1) {
-            throw new IllegalArgumentException("Ошибка, ввели лишнее слово");
-        }
-        return array;
-    }
-
     private static void addBook() {
         System.out.print("Введите книгу для добавления ");
         String stringIn = scanner.nextLine();
-        String[] bookAttributes = stringIn.split(",");
-        Book newBook = new Book(bookAttributes[0].trim(), bookAttributes[1].trim(),
-                Integer.parseInt(bookAttributes[2].replaceAll(" ","")));
+        Book newBook = new Book(stringIn.split(",")[0].trim(), stringIn.split(",")[1].trim(),
+                Integer.parseInt(stringIn.split(",")[2].replaceAll(" ","")));
         boolean isBookAddShelf = bookshelf.addBook(newBook);
         System.out.println("Книга " + newBook + (isBookAddShelf ? " добавлена на полку" :
                 " не добавлена, нет места на полке") );
@@ -117,15 +104,15 @@ public class BookshelfTest {
     private static void findBook() {
         System.out.print("Введите название для поиска книги: ");
             String titleBook = scanner.nextLine();
-            System.out.println("Книга " + (bookshelf.findBook(titleBook) instanceof Book ? bookshelf.findBook(titleBook)
-                    : "с названием " + titleBook + " не") + " найдена");
+            Book book = bookshelf.findBook(titleBook);
+            System.out.println("Книга " + (book != null ? book : "с названием " + titleBook + " не") + " найдена");
     }
 
     private static void deleteBook() {
         System.out.print("Для удаления книги введите ее название ");
             String titleBook = scanner.nextLine();
-            if (bookshelf.findBook(titleBook) instanceof Book) {
-                Book book = bookshelf.findBook(titleBook);
+            Book book = bookshelf.findBook(titleBook);
+            if (book != null) {
                 bookshelf.delete(book.getTitle());
                 System.out.println("Книга " + book + " удалена");
             } else {
@@ -135,10 +122,6 @@ public class BookshelfTest {
 
     private static void clearShelf() {
         bookshelf.clearShelf();
-    }
-
-    private static int getNumberBookOnShelves() {
-        return bookshelf.getCountBooks();
     }
 
     private static int getAmountFreeSpace() {

@@ -17,21 +17,20 @@ public class Bookshelf {
         return false;
     }
 
-    public <T> T findBook(String title) {
+    public Book findBook(String title) {
         for (int i = 0; i < countBooks; i++) {
             if (books[i].getTitle().equals(title)) {
-                return (T) books[i];
+                return books[i];
             }
         }
-        Integer number = -1;
-        return (T) number;
+        return null;
     }
 
     public void delete(String title) {
         for (int i = 0; i < countBooks; i++) {
             if (books[i].getTitle().equals(title)) {
-                System.arraycopy(books,i + 1, books, i, books.length - i - 1);
-                Arrays.fill(books, books.length - 1, books.length, null);
+                System.arraycopy(books,i + 1, books, i, countBooks - (i + 1));
+                books[countBooks - 1] = null;
                 countBooks--;
            }
        }
@@ -50,7 +49,7 @@ public class Bookshelf {
     }
 
     public void clearShelf() {
-        Arrays.fill(books, 0, countBooks - 1, null);
+        Arrays.fill(books, 0, countBooks, null);
         countBooks = 0;
         System.out.println("Очистили полки от книг");
     }

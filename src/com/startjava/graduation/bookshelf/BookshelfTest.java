@@ -3,20 +3,21 @@ package com.startjava.graduation.bookshelf;
 import java.util.Scanner;
 
 public class BookshelfTest {
-    private static boolean isEndProgram = true;
+    private static boolean isProgramCompleted = false;
     private static Bookshelf bookshelf;
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         bookshelf = new Bookshelf();
-        while (isEndProgram) {
-            printBooksOnShelves();
+        while (!isProgramCompleted) {
+            printMenu();
+            printBookShelf();
             System.out.print("Введите команду: ");
             try {
                 String command = scanner.nextLine();
                 while (true) {
                     selectAction(command);
-                    if (!isEndProgram) {
+                    if (isProgramCompleted) {
                         break;
                     }
                     System.out.print("Для продолжения работы нажмите Enter");
@@ -34,12 +35,17 @@ public class BookshelfTest {
 
     private static void printMenu() {
         System.out.print("""
-                -----------------------------------------------------
+                ----------------------------------------------------------
                     ОБЪЯВЛЕНИЕ
-                Как добавлять книги? Книги добавляются через запятую:
-                Автор (запятая) Название (запятая) Год издания
-                Пример: Пушкин А.С., Ромео и Джульета, 2020
-                -----------------------------------------------------
+                Как добавлять книги? Книги добавляются через Enter:
+                Курсор стоит на новой строке вводим часть и нажимаем Enter
+                Автор (Enter) Название (Enter) Год издания (Enter)
+                Пример:
+                Введите книгу для добавления нажимая Enter (команда)
+                Пушкин А.С.                 (вводим и нажимаем Enter)
+                Ромео и Джульета            (вводим и нажимаем Enter)
+                2020                        (вводим и нажимаем Enter)
+                ----------------------------------------------------------
                     МЕНЮ
                 Команды, которые можно ввести в командной строке:
                 1) Добавить книгу, ввести: Добавить
@@ -51,14 +57,13 @@ public class BookshelfTest {
                 """);
     }
 
-    private static void printBooksOnShelves() {
-        printMenu();
+    private static void printBookShelf() {
         if (bookshelf.getCountBooks() == 0) {
             System.out.println("Шкаф пуст. Вы можете добавить в него первую книгу");
         } else {
             System.out.println("Шкаф содержит " + bookshelf.getCountBooks() + " книги.  Свободно - " +
                     getAmountFreeSpace() + " полок");
-            Book[] books = bookshelf.getAllBooks();
+            Book[] books = bookshelf.getAll();
             int lenMaxStringBook = 0;
             for (Book book : books) {
                 int len = book.toString().length();
@@ -85,43 +90,39 @@ public class BookshelfTest {
             case "Добавить" -> addBook();
             case "Найти" -> findBook();
             case "Удалить" -> deleteBook();
-            case "Очистить" -> clearShelf();
+            case "Очистить" -> bookshelf.clearShelves();
             case "Завершить" -> completeWork();
             default -> throw new IllegalArgumentException("Ошибка, ввели слово которое не является командой");
         }
     }
 
     private static void addBook() {
-        System.out.print("Введите книгу для добавления ");
-        String stringIn = scanner.nextLine();
-        Book newBook = new Book(stringIn.split(",")[0].trim(), stringIn.split(",")[1].trim(),
-                Integer.parseInt(stringIn.split(",")[2].replaceAll(" ","")));
-        boolean isBookAddShelf = bookshelf.addBook(newBook);
+        System.out.println("Введите книгу для добавления нажимая Enter ");
+        String author = scanner.nextLine();
+        String title = scanner.nextLine();
+        String yearPublication = scanner.nextLine();
+        Book newBook = new Book(author.trim(), title.trim(),
+                Integer.parseInt(yearPublication.replaceAll(" ","")));
+        boolean isBookAddShelf = bookshelf.add(newBook);
         System.out.println("Книга " + newBook + (isBookAddShelf ? " добавлена на полку" :
                 " не добавлена, нет места на полке") );
     }
 
     private static void findBook() {
         System.out.print("Введите название для поиска книги: ");
-            String titleBook = scanner.nextLine();
-            Book book = bookshelf.findBook(titleBook);
-            System.out.println("Книга " + (book != null ? book : "с названием " + titleBook + " не") + " найдена");
+            String title = scanner.nextLine();
+            Book book = bookshelf.find(title);
+            System.out.println("Книга " + (book != null ? book : "с названием " + title + " не") + " найдена");
     }
 
     private static void deleteBook() {
         System.out.print("Для удаления книги введите ее название ");
-            String titleBook = scanner.nextLine();
-            Book book = bookshelf.findBook(titleBook);
-            if (book != null) {
-                bookshelf.delete(book.getTitle());
-                System.out.println("Книга " + book + " удалена");
-            } else {
-                System.out.println("Книга с названием " + titleBook + " не найдена");
-            }
-    }
-
-    private static void clearShelf() {
-        bookshelf.clearShelf();
+        String titleBook = scanner.nextLine();
+        if (bookshelf.delete(titleBook)) {
+            System.out.println("Книга с названием " + titleBook + " удалена");
+        } else {
+            System.out.println("Книга с названием " + titleBook + " не найдена");
+        }
     }
 
     private static int getAmountFreeSpace() {
@@ -134,6 +135,6 @@ public class BookshelfTest {
 
     private static void completeWork() {
         System.out.println("Программа завершила свою работу");
-        isEndProgram = false;
+        isProgramCompleted = true;
     }
 }

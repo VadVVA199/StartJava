@@ -8,7 +8,7 @@ public class Bookshelf {
     private int countBooks;
     private final Book[] books = new Book[NUMBER_SHELVES];
 
-    public boolean addBook(Book book) {
+    public boolean add(Book book) {
         if (countBooks < NUMBER_SHELVES) {
             books[countBooks] = book;
             countBooks++;
@@ -17,7 +17,7 @@ public class Bookshelf {
         return false;
     }
 
-    public Book findBook(String title) {
+    public Book find(String title) {
         for (int i = 0; i < countBooks; i++) {
             if (books[i].getTitle().equals(title)) {
                 return books[i];
@@ -26,17 +26,19 @@ public class Bookshelf {
         return null;
     }
 
-    public void delete(String title) {
+    public boolean delete(String title) {
         for (int i = 0; i < countBooks; i++) {
             if (books[i].getTitle().equals(title)) {
                 System.arraycopy(books,i + 1, books, i, countBooks - (i + 1));
                 books[countBooks - 1] = null;
                 countBooks--;
-           }
-       }
+                return true;
+            }
+        }
+        return false;
     }
 
-    public Book[] getAllBooks() {
+    public Book[] getAll() {
         return Arrays.copyOf(books, countBooks);
     }
 
@@ -48,7 +50,7 @@ public class Bookshelf {
         return NUMBER_SHELVES - countBooks;
     }
 
-    public void clearShelf() {
+    public void clearShelves() {
         Arrays.fill(books, 0, countBooks, null);
         countBooks = 0;
         System.out.println("Очистили полки от книг");

@@ -63,24 +63,16 @@ public class BookshelfTest {
         } else {
             System.out.println("Шкаф содержит " + bookshelf.getCountBooks() + " книги.  Свободно - " +
                     getAmountFreeSpace() + " полок");
-            Book[] books = bookshelf.getAll();
-            int lenMaxStringBook = 0;
-            for (Book book : books) {
-                int len = book.toString().length();
-                if (len > lenMaxStringBook) {
-                    lenMaxStringBook = len;
-                }
-            }
-            for (Book book : books) {
-                if (book != null) {
-                    int numberCharacter = lenMaxStringBook - book.toString().length();
-                    System.out.println("|" + book + " ".repeat(numberCharacter) + "|");
-                    System.out.println("|" + "-".repeat(lenMaxStringBook) + "|");
-                }
+            int shelfLength = bookshelf.getShelfLength();
+            for (Book book : bookshelf.getAll()) {
+                int numberCharacter = shelfLength - book.toString().length();
+                System.out.println("|" + book + " ".repeat(numberCharacter) + "|");
+                System.out.println("|" + "-".repeat(shelfLength) + "|");
+
             }
             if (bookshelf.getCountBooks() < Bookshelf.NUMBER_SHELVES) {
-                System.out.println("|" + " ".repeat(lenMaxStringBook) + "|");
-                System.out.println("|" + "-".repeat(lenMaxStringBook) + "|");
+                System.out.println("|" + " ".repeat(shelfLength) + "|");
+                System.out.println("|" + "-".repeat(shelfLength) + "|");
             }
         }
     }

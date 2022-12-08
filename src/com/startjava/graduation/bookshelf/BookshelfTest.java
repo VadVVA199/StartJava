@@ -68,7 +68,6 @@ public class BookshelfTest {
                 int numberCharacter = shelfLength - book.toString().length();
                 System.out.println("|" + book + " ".repeat(numberCharacter) + "|");
                 System.out.println("|" + "-".repeat(shelfLength) + "|");
-
             }
             if (bookshelf.getCountBooks() < Bookshelf.NUMBER_SHELVES) {
                 System.out.println("|" + " ".repeat(shelfLength) + "|");

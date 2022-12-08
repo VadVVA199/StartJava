@@ -38,7 +38,7 @@ public class Bookshelf {
                 books[countBooks - 1] = null;
                 countBooks--;
                 if (lengthBookDelete == shelfLength) {
-                    shelfLength = calculateShelfLength();
+                    calculateShelfLength();
                 }
                 return true;
             }
@@ -68,15 +68,12 @@ public class Bookshelf {
         System.out.println("Очистили полки от книг");
     }
 
-    public int calculateShelfLength() {
-        int maxBookLength = 0;
+    private void calculateShelfLength() {
+        shelfLength = 0;
         for (Book book : getAll()) {
-            if (book.getLenInfo() == shelfLength) {
-                return shelfLength;
-            } else {
-                maxBookLength = Math.max(book.getLenInfo(), maxBookLength);
+            if (book.getLenInfo() > shelfLength) {
+                shelfLength = book.getLenInfo();
             }
         }
-        return maxBookLength;
     }
 }

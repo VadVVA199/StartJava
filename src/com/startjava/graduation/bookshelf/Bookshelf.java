@@ -12,7 +12,9 @@ public class Bookshelf {
     public boolean add(Book book) {
         if (countBooks < NUMBER_SHELVES) {
             books[countBooks] = book;
-            shelfLength = calculateShelfLength(book.getBookLength(), "add");
+            if (book.getLenInfo() > shelfLength) {
+                shelfLength = book.getLenInfo();
+            }
             countBooks++;
             return true;
         }
@@ -26,16 +28,18 @@ public class Bookshelf {
             }
         }
         return null;
-    }
+      }
 
     public boolean delete(String title) {
         for (int i = 0; i < countBooks; i++) {
             if (books[i].getTitle().equals(title)) {
-                int lengthBookDelete = books[i].getBookLength();
+                int lengthBookDelete = books[i].getLenInfo();
                 System.arraycopy(books,i + 1, books, i, countBooks - (i + 1));
                 books[countBooks - 1] = null;
                 countBooks--;
-                shelfLength = calculateShelfLength(lengthBookDelete, "delete");
+                if (lengthBookDelete == shelfLength) {
+                    shelfLength = calculateShelfLength();
+                }
                 return true;
             }
         }
@@ -64,25 +68,15 @@ public class Bookshelf {
         System.out.println("Очистили полки от книг");
     }
 
-    public int calculateShelfLength(int bookLength, String operation) {
-        if (bookLength >= shelfLength) {
-            return switch (operation) {
-                case "add" -> bookLength;
-                case "delete" -> {
-                    int maxBookLength = 0;
-                    for (Book book : getAll()) {
-                        if (book.getBookLength() == shelfLength) {
-                            maxBookLength =shelfLength;
-                            break;
-                        } else {
-                            maxBookLength = Math.max(book.getBookLength(), maxBookLength);
-                        }
-                    }
-                    yield maxBookLength;
-                }
-                default -> throw new IllegalArgumentException("Ошибка операции");
-            };
+    public int calculateShelfLength() {
+        int maxBookLength = 0;
+        for (Book book : getAll()) {
+            if (book.getLenInfo() == shelfLength) {
+                return shelfLength;
+            } else {
+                maxBookLength = Math.max(book.getLenInfo(), maxBookLength);
+            }
         }
-        return shelfLength;
+        return maxBookLength;
     }
 }
